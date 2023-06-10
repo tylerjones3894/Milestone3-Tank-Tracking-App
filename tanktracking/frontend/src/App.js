@@ -1,5 +1,5 @@
 import React from 'react';
-import Browser from './components/Browser';
+import Browser from './components/Browse';
 import Calendar from './components/Calendar';
 import Community from './components/Community';
 import Navbar from './components/Navbar';
