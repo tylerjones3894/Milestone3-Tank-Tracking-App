@@ -18,14 +18,34 @@ app.use(bodyParser.json());
 //second arg is middleware function passing object to configure API
 app.use('/api', graphqlHttp({
     // schema object contains root comands
+    // types define what an endpoint returns, bundles all supported queries and mutations
+    // the ! assures a string will always be returned and can't be nulled. can return an empty list
     schema: buildSchema(`
+        type RootQuery {
+            tasks: [String!]
+        }
+        type RootMutation {
+            createTask(name: String): String
+        }
         schema {
-            query:
-            mutation:
+            query: RootQuery
+            mutation: RootMutation
         }
     `),
     //directs to another object containing all resolver functions
-    rootValue: {}
+    //a resolver is a function within the object
+    rootValue: {
+        tasks: () => {
+            return []
+        },
+        //args to access args passed in RootMutation
+        createTask: (arg) => {
+            const taskName = arg.name;
+            return taskName;
+        }
+    },
+    //creates user interface to test api
+    graphiql: true
 }));
 
 app.listen(PORT, () => {
